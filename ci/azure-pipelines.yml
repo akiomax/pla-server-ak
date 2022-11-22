@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: Apache-2.0
+
+name: $(SourceBranchName)-$(Date:yyyyMMdd)$(Rev:.rrr)
+trigger:
+- master
+pr:
+- master
+
+variables:
+  GOPATH: $(Agent.BuildDirectory)/go
+  PATH: $(Agent.BuildDirectory)/go/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+  GO_VER: 1.13.8
+  NODE_VER: 10.19
+
+jobs:
+- job: TestsWithCoverage
+  pool:
+    vmImage: ubuntu-16.04
+  steps:
+
+  - template: install_deps.yml
+  - checkout: self
+  - script: |
+      npm config set prefix ~/npm
+      cd iroha && npm install
+      npm run build
+      npm run lint
+      npm run test
+      cd ../client && npm install
+      npm run build
+    displayName: Run Tests With Coverage Report
+
+- job: SanityChecks
+  pool:
+    vmImage: ubuntu-16.04
+  steps:
+  - script: |
+      echo "Not implemented"
+    displayName: Run Sanity Checks
