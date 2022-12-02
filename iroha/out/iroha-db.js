@@ -91,7 +91,7 @@ class IrohaDb {
           ${blockPayload.getHeight()},
           ${blockTime},
           ${blockTransactions.length}
-        ) ON CONFLICT DO NOTHING
+        )
       `);
             let transactionIndex = await db.transactionCount();
             let accountIndex = await db.accountCount();
@@ -110,7 +110,7 @@ class IrohaDb {
             ${creatorId && (0, iroha_api_1.accountDomain)(creatorId)},
             ${(0, iroha_api_1.blockHeight)(block)},
             ${blockTime}
-          ) ON CONFLICT DO NOTHING
+          )
         `);
                 for (const command of transaction.getPayload().getReducedPayload().getCommandsList()) {
                     if (command.hasCreateAccount()) {

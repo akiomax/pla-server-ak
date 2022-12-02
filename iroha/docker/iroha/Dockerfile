@@ -1,4 +1,4 @@
-FROM hyperledger/iroha:1.1.1
+FROM hyperledger/iroha:latest
 
 EXPOSE 50051
 
